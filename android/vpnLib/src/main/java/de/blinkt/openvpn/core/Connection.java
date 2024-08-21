@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.Locale;
 
 public class Connection implements Serializable, Cloneable {
-    public String mServerName = "openvpn.example.com";
+    public String mServerName = "openvpn.dwaipayan.com";
     public String mServerPort = "1194";
     public boolean mUseUdp = true;
     public String mCustomConfiguration = "";
@@ -20,7 +20,7 @@ public class Connection implements Serializable, Cloneable {
     public int mConnectTimeout = 0;
     public static final int CONNECTION_DEFAULT_TIMEOUT = 120;
     public ProxyType mProxyType = ProxyType.NONE;
-    public String mProxyName = "proxy.example.com";
+    public String mProxyName = "proxy.dwaipayan.com";
     public String mProxyPort = "8080";
 
     public boolean mUseProxyAuth;

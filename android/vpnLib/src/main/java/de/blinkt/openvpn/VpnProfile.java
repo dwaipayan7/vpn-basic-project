@@ -153,7 +153,7 @@ public class VpnProfile implements Serializable, Cloneable {
     public long mLastUsed;
     public String importedProfileHash;
     /* Options no longer used in new profiles */
-    public String mServerName = "openvpn.example.com";
+    public String mServerName = "openvpn.dwaipayan.com";
     public String mServerPort = "1194";
     public boolean mUseUdp = true;
     public boolean mTemporaryProfile = false;

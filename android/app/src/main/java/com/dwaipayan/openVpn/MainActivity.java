@@ -1,4 +1,4 @@
-package com.example.openVpnDemo;
+package com.dwaipayan.openVpn;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,18 +12,14 @@ import android.os.RemoteException;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.multidex.MultiDex;
-
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
-
 import de.blinkt.openvpn.VpnProfile;
 import de.blinkt.openvpn.core.ConfigParser;
 import de.blinkt.openvpn.core.OpenVPNService;

@@ -68,7 +68,7 @@ interface IInAppBillingService {
      *         "DETAILS_LIST" with a StringArrayList containing purchase information
      *              in JSON format similar to:
      *              '{ "productId" : "exampleSku", "type" : "inapp", "price" : "$5.00",
-     *                 "title : "Example Title", "description" : "This is an example description" }'
+     *                 "title : "Example Title", "description" : "This is an dwaipayan description" }'
      */
     Bundle getSkuDetails(int apiVersion, String packageName, String type, in Bundle skusBundle);
 
@@ -93,11 +93,11 @@ interface IInAppBillingService {
      *              failure as listed above.
      *         "INAPP_PURCHASE_DATA" - String in JSON format similar to
      *              '{"orderId":"12999763169054705758.1371079406387615",
-     *                "packageName":"com.example.app",
+     *                "packageName":"com.dwaipayan.app",
      *                "productId":"exampleSku",
      *                "purchaseTime":1345678900000,
      *                "purchaseToken" : "122333444455555",
-     *                "developerPayload":"example developer payload" }'
+     *                "developerPayload":"dwaipayan developer payload" }'
      *         "INAPP_DATA_SIGNATURE" - String containing the signature of the purchase data that
      *                                  was signed with the private key of the developer
      *                                  TODO: change this to app-specific keys.
