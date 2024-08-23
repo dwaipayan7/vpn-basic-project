@@ -147,7 +147,9 @@ public class MainActivity extends FlutterActivity {
             }
         });
 
-        vpnControlMethod = new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), METHOD_CHANNEL_VPN_CONTROL);
+        vpnControlMethod = new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(),
+                METHOD_CHANNEL_VPN_CONTROL);
+
         vpnControlMethod.setMethodCallHandler((call, result) -> {
             switch (call.method) {
                 case "stop":
