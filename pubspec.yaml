@@ -39,3 +39,6 @@ flutter:
   assets:
     - assets/
     - assets/vpn/
+    - assets/images/logo.png
+#    - assets/flags
+#    - assets/lottie
