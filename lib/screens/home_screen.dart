@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:vpn_basic_project/widgets/home_card.dart';
 import '../main.dart';
 import '../models/vpn_config.dart';
 import '../models/vpn_status.dart';
@@ -77,59 +78,77 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         iconTheme: IconThemeData(color: Colors.white),
       ),
+
+
+
+
+
       body: Column(
           mainAxisSize: MainAxisSize.min,
           // crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            SizedBox(height: mq.height * 0.02, width: double.maxFinite,),
             _vpnButton(),
+            // SizedBox(height: 20,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                HomeCard(
+                    title: 'Country',
+                    subtitle: 'INDIA',
+                    icon: CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.blue,
+                      child: Icon(Icons.vpn_lock_rounded,
+                        size: 30,color: Colors.white,),),
 
-            Center(
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  shape: StadiumBorder(),
-                  backgroundColor: Colors.blue,
                 ),
-                child: Text(
-                  _vpnState == VpnEngine.vpnDisconnected
-                      ? 'Connect VPN'
-                      : _vpnState.replaceAll("_", " ").toUpperCase(),
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: _connectClick,
-              ),
+
+                HomeCard(
+                  title: '20ms',
+                  subtitle: 'PING',
+                  icon: CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.orange,
+                    child: Icon(Icons.equalizer_rounded,
+                      size: 30,color: Colors.white,),),
+
+                )
+
+              ],
             ),
-            StreamBuilder<VpnStatus?>(
-              initialData: VpnStatus(),
-              stream: VpnEngine.vpnStatusSnapshot(),
-              builder: (context, snapshot) => Text(
-                  "${snapshot.data?.byteIn ?? ""}, ${snapshot.data?.byteOut ?? ""}",
-                  textAlign: TextAlign.center),
+            SizedBox(height: mq.height* .02,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                HomeCard(
+                  title: '0 Kbps',
+                  subtitle: 'DOWNLOAD',
+                  icon: CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.lightGreen,
+                    child: Icon(Icons.arrow_downward,
+                      size: 30,color: Colors.white,),),
+
+                ),
+
+                HomeCard(
+                  title: '0 Kbps',
+                  subtitle: 'UPLOAD',
+                  icon: CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.yellow.shade600,
+                    child: Icon(Icons.arrow_upward,
+                      size: 30,color: Colors.white,),),
+
+                )
+
+              ],
             ),
 
-            //sample vpn list
-            Column(
-                children: _listVpn
-                    .map(
-                      (e) => ListTile(
-                        title: Text(e.country),
-                        leading: SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: Center(
-                              child: _selectedVpn == e
-                                  ? CircleAvatar(
-                                      backgroundColor: Colors.green)
-                                  : CircleAvatar(
-                                      backgroundColor: Colors.grey)),
-                        ),
-                        onTap: () {
-                          log("${e.country} is selected");
-                          setState(() => _selectedVpn = e);
-                        },
-                      ),
-                    )
-                    .toList())
-          ]),
+
+           ]),
+        bottomNavigationBar: _changeLocation(),
     );
   }
 
@@ -154,7 +173,9 @@ class _HomeScreenState extends State<HomeScreen> {
       Semantics(
             button: true,
             child: InkWell(
-              onTap: (){},
+              onTap: (){
+                
+              },
               borderRadius: BorderRadius.circular(100),
               child: Container(
                 padding: EdgeInsets.all(16),
@@ -196,7 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
       //connection status label
       Container(
-        margin: EdgeInsets.only(top: mq.height * 0.015),
+        margin: EdgeInsets.only(top: mq.height * 0.015, bottom: mq.height * 0.05),
         padding: EdgeInsets.symmetric(vertical: 6, horizontal: 16),
         decoration: BoxDecoration(
           color: Colors.blue,
@@ -204,7 +225,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
 
         child: Text(
-          'Disconnect',
+          'Not Connected',
           style: TextStyle(
             fontSize: 12.5,
             color: Colors.white,
@@ -214,4 +235,85 @@ class _HomeScreenState extends State<HomeScreen> {
       )
     ],
   );
+
+  Widget _changeLocation() => SafeArea(
+    child: Container(
+      height: 60,
+      color: Colors.blue,
+      padding: EdgeInsets.symmetric(horizontal: mq.width * 0.04),
+      child: Row(
+        children: [
+          
+          Icon(CupertinoIcons.globe, color: Colors.white, size: 28,),
+          SizedBox(width: 10,),
+          Text("Change Location", style: TextStyle(color: Colors.white,fontSize: 16,
+          fontWeight: FontWeight.w500
+          ),),
+          Spacer(),
+          CircleAvatar(
+             // Set the background to transparent
+            child: Icon(
+              Icons.keyboard_arrow_right,
+              color: Colors.black54,
+              size: 16,
+            ),
+          )
+
+        ],
+      ),
+    ),
+  );
+
+
 }
+
+
+
+//Previous code
+
+//
+// child: TextButton(
+// style: TextButton.styleFrom(
+// shape: StadiumBorder(),
+// backgroundColor: Colors.blue,
+// ),
+// child: Text(
+// _vpnState == VpnEngine.vpnDisconnected
+// ? 'Connect VPN'
+//     : _vpnState.replaceAll("_", " ").toUpperCase(),
+// style: TextStyle(color: Colors.white),
+// ),
+// onPressed: _connectClick,
+// ),
+// ),
+// StreamBuilder<VpnStatus?>(
+// initialData: VpnStatus(),
+// stream: VpnEngine.vpnStatusSnapshot(),
+// builder: (context, snapshot) => Text(
+// "${snapshot.data?.byteIn ?? ""}, ${snapshot.data?.byteOut ?? ""}",
+// textAlign: TextAlign.center),
+// ),
+//
+// //sample vpn list
+// Column(
+// children: _listVpn
+//     .map(
+// (e) => ListTile(
+// title: Text(e.country),
+// leading: SizedBox(
+// height: 20,
+// width: 20,
+// child: Center(
+// child: _selectedVpn == e
+// ? CircleAvatar(
+// backgroundColor: Colors.green)
+//     : CircleAvatar(
+// backgroundColor: Colors.grey)),
+// ),
+// onTap: () {
+// log("${e.country} is selected");
+// setState(() => _selectedVpn = e);
+// },
+// ),
+// )
+// .toList())
