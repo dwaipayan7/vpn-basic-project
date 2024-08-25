@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:get/get.dart';
+import 'package:vpn_basic_project/widgets/count_down_timer.dart';
 import 'package:vpn_basic_project/widgets/home_card.dart';
 import '../main.dart';
 import '../models/vpn_config.dart';
@@ -18,6 +20,9 @@ class _HomeScreenState extends State<HomeScreen> {
   String _vpnState = VpnEngine.vpnDisconnected;
   List<VpnConfig> _listVpn = [];
   VpnConfig? _selectedVpn;
+ final RxBool _startTimer = false.obs;
+
+
 
   @override
   void initState() {
@@ -84,11 +89,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
       body: Column(
-          mainAxisSize: MainAxisSize.min,
+          // mainAxisSize: MainAxisSize.min,
           // crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            SizedBox(height: mq.height * 0.02, width: double.maxFinite,),
+            // SizedBox(height: mq.height * 0.02, width: double.maxFinite,),
+            //VPN Button
             _vpnButton(),
+
+            
             // SizedBox(height: 20,),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -117,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
               ],
             ),
-            SizedBox(height: mq.height* .02,),
+            // SizedBox(height: mq.height* .02,),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -174,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
             button: true,
             child: InkWell(
               onTap: (){
-                
+                _startTimer.value= !_startTimer.value;
               },
               borderRadius: BorderRadius.circular(100),
               child: Container(
@@ -207,32 +216,41 @@ class _HomeScreenState extends State<HomeScreen> {
                               fontSize: 12.5,
                               color: Colors.white,
                               fontWeight: FontWeight.w600),
-                        )
+                        ),
+
                       ],
+
                     ),
                   ),
+
                 ),
+
               ),
             ),
           ),
       //connection status label
       Container(
-        margin: EdgeInsets.only(top: mq.height * 0.015, bottom: mq.height * 0.05),
+        margin: EdgeInsets.only(top: mq.height * 0.012, bottom: mq.height * 0.033),
         padding: EdgeInsets.symmetric(vertical: 6, horizontal: 16),
         decoration: BoxDecoration(
           color: Colors.blue,
           borderRadius: BorderRadius.circular(16)
         ),
 
-        child: Text(
-          'Not Connected',
-          style: TextStyle(
-            fontSize: 12.5,
-            color: Colors.white,
-            fontWeight: FontWeight.w500
+        child: Padding(
+          padding: const EdgeInsets.only(top: 2),
+          child: Text(
+            'Not Connected',
+            style: TextStyle(
+              fontSize: 12.5,
+              color: Colors.white,
+              fontWeight: FontWeight.w500
+            ),
           ),
         ),
-      )
+      ),
+
+      Obx(() => CountDownTimer(startTimer: _startTimer.value)),
     ],
   );
 
