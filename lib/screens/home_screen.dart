@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
+import 'package:vpn_basic_project/screens/location_screen.dart';
 import 'package:vpn_basic_project/widgets/count_down_timer.dart';
 import 'package:vpn_basic_project/widgets/home_card.dart';
 import '../main.dart';
@@ -255,29 +256,37 @@ class _HomeScreenState extends State<HomeScreen> {
   );
 
   Widget _changeLocation() => SafeArea(
-    child: Container(
-      height: 60,
-      color: Colors.blue,
-      padding: EdgeInsets.symmetric(horizontal: mq.width * 0.04),
-      child: Row(
-        children: [
-          
-          Icon(CupertinoIcons.globe, color: Colors.white, size: 28,),
-          SizedBox(width: 10,),
-          Text("Change Location", style: TextStyle(color: Colors.white,fontSize: 16,
-          fontWeight: FontWeight.w500
-          ),),
-          Spacer(),
-          CircleAvatar(
-             // Set the background to transparent
-            child: Icon(
-              Icons.keyboard_arrow_right,
-              color: Colors.black54,
-              size: 16,
-            ),
-          )
+    child: Semantics(
+      button: true,
+      child: InkWell(
+        onTap: (){
+          Get.to(() => LocationScreen());
+        },
+        child: Container(
+          height: 60,
+          color: Colors.blue,
+          padding: EdgeInsets.symmetric(horizontal: mq.width * 0.04),
+          child: Row(
+            children: [
 
-        ],
+              Icon(CupertinoIcons.globe, color: Colors.white, size: 28,),
+              SizedBox(width: 10,),
+              Text("Change Location", style: TextStyle(color: Colors.white,fontSize: 16,
+              fontWeight: FontWeight.w500
+              ),),
+              Spacer(),
+              CircleAvatar(
+                 // Set the background to transparent
+                child: Icon(
+                  Icons.keyboard_arrow_right,
+                  color: Colors.black54,
+                  size: 16,
+                ),
+              )
+
+            ],
+          ),
+        ),
       ),
     ),
   );
