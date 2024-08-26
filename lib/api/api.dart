@@ -9,20 +9,25 @@ import 'package:vpn_basic_project/models/vpn.dart';
 class API{
   static Future<void> getVPNServers() async{
     final List<Vpn> vpnList = [];
-    final res = await get(Uri.parse('https://www.vpngate.net/api/iphone/'));
 
-    final csvString = res.body.split("#")[1].replaceAll('*', '');
-    List<List<dynamic>> list = const CsvToListConverter().convert(csvString);
-    final header = list[0];
+try{
+  final res = await get(Uri.parse('https://www.vpngate.net/api/iphone/'));
 
-    Map<String, dynamic> tempJson = {};
-    for(int i = 1; i< header.length; i++){
-      for(int j=0; j<header.length; j++){
-        tempJson.addAll({header[j].toString() : list[i][j]});
-      }
-      vpnList.add(Vpn.fromJson(tempJson));
+  final csvString = res.body.split("#")[1].replaceAll('*', '');
+  List<List<dynamic>> list = const CsvToListConverter().convert(csvString);
+  final header = list[0];
+
+  Map<String, dynamic> tempJson = {};
+  for(int i = 1; i< header.length; i++){
+    for(int j=0; j<header.length; j++){
+      tempJson.addAll({header[j].toString() : list[i][j]});
     }
-    log(vpnList.first.hostname);
+    vpnList.add(Vpn.fromJson(tempJson));
+  }
+  log(vpnList.first.hostname);
+}catch(e){
+  Exception(e);
+}
 
 
     // log(res.body);
