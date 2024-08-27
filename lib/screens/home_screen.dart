@@ -274,6 +274,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Text("Change Location", style: TextStyle(color: Colors.white,fontSize: 16,
               fontWeight: FontWeight.w500
               ),),
+
               Spacer(),
               CircleAvatar(
                  // Set the background to transparent
