@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
+import 'package:vpn_basic_project/controllers/home_controller.dart';
 import 'package:vpn_basic_project/screens/location_screen.dart';
 import 'package:vpn_basic_project/widgets/count_down_timer.dart';
 import 'package:vpn_basic_project/widgets/home_card.dart';
@@ -18,23 +19,32 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String _vpnState = VpnEngine.vpnDisconnected;
+
+  final _controller = HomeController();
   List<VpnConfig> _listVpn = [];
   VpnConfig? _selectedVpn;
- final RxBool _startTimer = false.obs;
+
 
 
 
   @override
   void initState() {
     super.initState();
+    
 
     ///Add listener to update vpn state
     VpnEngine.vpnStageSnapshot().listen((event) {
-      setState(() => _vpnState = event);
+      _controller.vpnState.value = event;
     });
 
     initVpn();
+  }
+  
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _controller.dispose();
   }
 
   void initVpn() async {
@@ -96,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             // SizedBox(height: mq.height * 0.02, width: double.maxFinite,),
             //VPN Button
-            _vpnButton(),
+            Obx(()=> _vpnButton()),
 
             
             // SizedBox(height: 20,),
@@ -166,7 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ///Stop right here if user not select a vpn
     if (_selectedVpn == null) return;
 
-    if (_vpnState == VpnEngine.vpnDisconnected) {
+    if (_controller.vpnState.value == VpnEngine.vpnDisconnected) {
       ///Start if stage is disconnected
       VpnEngine.startVpn(_selectedVpn!);
     } else {
@@ -184,22 +194,23 @@ class _HomeScreenState extends State<HomeScreen> {
             button: true,
             child: InkWell(
               onTap: (){
-                _startTimer.value= !_startTimer.value;
+                _connectClick();
+                _controller.startTimer.value = !_controller.startTimer.value;
               },
               borderRadius: BorderRadius.circular(100),
               child: Container(
                 padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                    color: Colors.blue.withOpacity(.2), shape: BoxShape.circle),
+                    color: _controller.getButtonColor.withOpacity(.2), shape: BoxShape.circle),
                 child: Container(
                   padding: EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(.3), shape: BoxShape.circle),
+                      color: _controller.getButtonColor.withOpacity(.3), shape: BoxShape.circle),
                   child: Container(
                     width: mq.height * .14,
                     height: mq.height * .14,
                     decoration:
-                        BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
+                        BoxDecoration(color: _controller.getButtonColor, shape: BoxShape.circle),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -212,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: 8,
                         ),
                         Text(
-                          "Tap to Connect",
+                          _controller.getButtonText,
                           style: TextStyle(
                               fontSize: 12.5,
                               color: Colors.white,
@@ -234,14 +245,16 @@ class _HomeScreenState extends State<HomeScreen> {
         margin: EdgeInsets.only(top: mq.height * 0.012, bottom: mq.height * 0.033),
         padding: EdgeInsets.symmetric(vertical: 6, horizontal: 16),
         decoration: BoxDecoration(
-          color: Colors.blue,
+          color: _controller.getButtonColor,
           borderRadius: BorderRadius.circular(16)
         ),
 
         child: Padding(
           padding: const EdgeInsets.only(top: 2),
           child: Text(
-            'Not Connected',
+            _controller.vpnState.value == VpnEngine.vpnDisconnected?
+            'Not Connected'
+            : _controller.vpnState.replaceAll('_', ' ').toUpperCase(),
             style: TextStyle(
               fontSize: 12.5,
               color: Colors.white,
@@ -251,7 +264,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
 
-      Obx(() => CountDownTimer(startTimer: _startTimer.value)),
+      Obx(() => CountDownTimer(startTimer: _controller.startTimer.value)),
     ],
   );
 
@@ -274,6 +287,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Text("Change Location", style: TextStyle(color: Colors.white,fontSize: 16,
               fontWeight: FontWeight.w500
               ),),
+
               Spacer(),
               CircleAvatar(
                  // Set the background to transparent
