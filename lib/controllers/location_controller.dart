@@ -11,9 +11,9 @@ class LocationController extends GetxController{
   final RxBool isLoading = false.obs;
 
   Future<void> getVpnData() async{
-    isLoading.value = true;
-    vpnList =  await API.getVPNServers();
     isLoading.value = false;
+    vpnList =  await API.getVPNServers();
+    isLoading.value = true;
   }
 
 }

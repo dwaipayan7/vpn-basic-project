@@ -138,11 +138,16 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             // SizedBox(height: mq.height* .02,),
-            Row(
+
+
+            StreamBuilder<VpnStatus?>(
+            initialData: VpnStatus(),
+            stream: VpnEngine.vpnStatusSnapshot(),
+            builder: (context, snapshot) =>   Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 HomeCard(
-                  title: '0 Kbps',
+                  title: '${snapshot.data?.byteIn ?? "0 Kbps"}',
                   subtitle: 'DOWNLOAD',
                   icon: CircleAvatar(
                     radius: 30,
@@ -153,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
 
                 HomeCard(
-                  title: '0 Kbps',
+                  title: '${snapshot.data?.byteOut ?? "0 Kbps"}',
                   subtitle: 'UPLOAD',
                   icon: CircleAvatar(
                     radius: 30,
@@ -164,10 +169,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 )
 
               ],
-            ),
-
-
-           ]),
+            )
+            )
+           ]
+    ),
         bottomNavigationBar: _changeLocation(),
     );
   }
@@ -179,8 +184,10 @@ class _HomeScreenState extends State<HomeScreen> {
     if (_controller.vpnState.value == VpnEngine.vpnDisconnected) {
       ///Start if stage is disconnected
       VpnEngine.startVpn(_selectedVpn!);
+      _controller.startTimer.value = true;
     } else {
       ///Stop if stage is "not" disconnected
+      _controller.startTimer.value = false;
       VpnEngine.stopVpn();
     }
   }
@@ -195,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: InkWell(
               onTap: (){
                 _connectClick();
-                _controller.startTimer.value = !_controller.startTimer.value;
+
               },
               borderRadius: BorderRadius.circular(100),
               child: Container(

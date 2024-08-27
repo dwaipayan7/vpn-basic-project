@@ -13,9 +13,7 @@ class HomeController extends GetxController{
   final vpnState = VpnEngine.vpnDisconnected.obs;
   final RxBool startTimer = false.obs;
 
-  Future<void> initialData() async{
-
-  }
+  Future<void> initialData() async{}
 
   //vpn buttons color
   Color get getButtonColor {
