@@ -20,10 +20,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
-  final _controller = HomeController();
+  final _controller = Get.put(HomeController());
   List<VpnConfig> _listVpn = [];
   VpnConfig? _selectedVpn;
-
 
 
 
@@ -177,20 +176,20 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _connectClick() {
-    ///Stop right here if user not select a vpn
-    if (_selectedVpn == null) return;
-
-    if (_controller.vpnState.value == VpnEngine.vpnDisconnected) {
-      ///Start if stage is disconnected
-      VpnEngine.startVpn(_selectedVpn!);
-      _controller.startTimer.value = true;
-    } else {
-      ///Stop if stage is "not" disconnected
-      _controller.startTimer.value = false;
-      VpnEngine.stopVpn();
-    }
-  }
+  // void _connectClick() {
+  //   ///Stop right here if user not select a vpn
+  //   if (_selectedVpn == null) return;
+  //
+  //   if (_controller.vpnState.value == VpnEngine.vpnDisconnected) {
+  //     ///Start if stage is disconnected
+  //     VpnEngine.startVpn(_selectedVpn!);
+  //     _controller.startTimer.value = true;
+  //   } else {
+  //     ///Stop if stage is "not" disconnected
+  //     _controller.startTimer.value = false;
+  //     VpnEngine.stopVpn();
+  //   }
+  // }
 
   //VPN Button
   Widget _vpnButton() => Column(
@@ -208,7 +207,8 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Container(
                 padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                    color: _controller.getButtonColor.withOpacity(.2), shape: BoxShape.circle),
+                    color: _controller.getButtonColor.withOpacity(.2),
+                    shape: BoxShape.circle),
                 child: Container(
                   padding: EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -236,14 +236,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: Colors.white,
                               fontWeight: FontWeight.w600),
                         ),
-
                       ],
-
                     ),
                   ),
-
                 ),
-
               ),
             ),
           ),
@@ -311,8 +307,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     ),
   );
-
-
 }
 
 
