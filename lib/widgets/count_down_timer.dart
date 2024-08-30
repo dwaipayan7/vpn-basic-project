@@ -1,8 +1,10 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class CountDownTimer extends StatefulWidget {
   final bool startTimer;
+
   const CountDownTimer({super.key, required this.startTimer});
 
   @override
@@ -29,25 +31,16 @@ class _CountDownTimerState extends State<CountDownTimer> {
     });
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-
-    if(_timer == null || !widget.startTimer)
+    if (_timer == null || !widget.startTimer)
       widget.startTimer ? _startTimer() : _stopTimer();
 
-
     String twoDigit(int n) => n.toString().padLeft(2, '0');
-    final hours = twoDigit(_duration.inHours);
     final minutes = twoDigit(_duration.inMinutes.remainder(60));
     final seconds = twoDigit(_duration.inSeconds.remainder(60));
+    final hours = twoDigit(_duration.inHours.remainder(60));
 
-    return Text(
-      '$hours:$minutes:$seconds',
-      style: const TextStyle(
-        fontSize: 22,
-      ),
-    );
+    return Text('$hours: $minutes: $seconds', style: TextStyle(fontSize: 22));
   }
 }

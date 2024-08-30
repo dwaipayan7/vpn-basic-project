@@ -20,20 +20,23 @@ class Vpn {
     required this.OpenVPNConfigDataBase64,
   });
 
-  Vpn.fromJson(Map<String, dynamic> json){
+  Vpn.fromJson(Map<String, dynamic> json) {
     hostname = json['HostName'] ?? '';
-    IP = json['IP']?? '';
-    Ping = json['Ping'].toString();
-    Speed = json['Speed'] ?? 0;
-    CountryLong = json['CountryLong']?? '';
-    CountryShort = json['CountryShort']?? '';
-    NumVpnSessions = json['NumVpnSessions']?? '';
-    OpenVPNConfigDataBase64 = json['OpenVPN_ConfigData_Base64']?? '';
+    IP = json['IP'] ?? '';
+    Ping = json['Ping'].toString(); // Ensure Ping is treated as a string
+    Speed = json['Speed'] ?? 0; // Default to 0 if Speed is null
+    CountryLong = json['CountryLong'] ?? '';
+    CountryShort = json['CountryShort'] ?? '';
+    NumVpnSessions = json['NumVpnSessions'] is int
+        ? json['NumVpnSessions']
+        : int.tryParse(json['NumVpnSessions'].toString()) ?? 0;
+    // Convert to int, default to 0 if parsing fails
+    OpenVPNConfigDataBase64 = json['OpenVPN_ConfigData_Base64'] ?? '';
   }
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['hostname'] = hostname;
+    data['HostName'] = hostname;
     data['IP'] = IP;
     data['Ping'] = Ping;
     data['Speed'] = Speed;

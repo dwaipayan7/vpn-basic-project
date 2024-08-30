@@ -109,32 +109,43 @@ class _HomeScreenState extends State<HomeScreen> {
 
             
             // SizedBox(height: 20,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                HomeCard(
-                    title: 'Country',
-                    subtitle: 'INDIA',
-                    icon: CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Colors.blue,
-                      child: Icon(Icons.vpn_lock_rounded,
-                        size: 30,color: Colors.white,),),
+            Obx(
+            ()=>
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  HomeCard(
+                      title: _controller.vpn.value.CountryLong.isEmpty
+                          ? 'Country'
+                          : _controller.vpn.value.CountryLong,
+                      subtitle: 'FREE',
+                      icon: CircleAvatar(
+                        radius: 30,
+                        backgroundColor: Colors.blue,
+                        child: _controller.vpn.value.CountryLong.isEmpty
+                            ? Icon(Icons.vpn_lock_rounded,
+                            size: 30, color: Colors.white)
+                            : null,
+                        backgroundImage: _controller.vpn.value.CountryLong.isEmpty
+                            ? null
+                            : AssetImage(
+                            'assets/flags/${_controller.vpn.value.CountryShort.toLowerCase()}.png'),
+                      )),
 
-                ),
+                  HomeCard(
+                      title: _controller.vpn.value.CountryLong.isEmpty
+                          ? '20 ms'
+                          : '${_controller.vpn.value.Ping} ms',
+                      subtitle: 'PING',
+                      icon: CircleAvatar(
+                        radius: 30,
+                        backgroundColor: Colors.orange,
+                        child: Icon(Icons.equalizer_rounded,
+                            size: 30, color: Colors.white),
+                      )),
 
-                HomeCard(
-                  title: '20ms',
-                  subtitle: 'PING',
-                  icon: CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Colors.orange,
-                    child: Icon(Icons.equalizer_rounded,
-                      size: 30,color: Colors.white,),),
-
-                )
-
-              ],
+                ],
+              ),
             ),
             // SizedBox(height: mq.height* .02,),
 
@@ -183,13 +194,16 @@ class _HomeScreenState extends State<HomeScreen> {
   //   if (_controller.vpnState.value == VpnEngine.vpnDisconnected) {
   //     ///Start if stage is disconnected
   //     VpnEngine.startVpn(_selectedVpn!);
-  //     _controller.startTimer.value = true;
+  //     CountDownTimer() = true;
   //   } else {
   //     ///Stop if stage is "not" disconnected
-  //     _controller.startTimer.value = false;
+  //     _con.startTimer.value = false;
   //     VpnEngine.stopVpn();
+  //
   //   }
   // }
+
+
 
   //VPN Button
   Widget _vpnButton() => Column(
@@ -200,8 +214,8 @@ class _HomeScreenState extends State<HomeScreen> {
             button: true,
             child: InkWell(
               onTap: (){
-                _connectClick();
-
+                // _connectClick();
+                _controller.connectToVpn();
               },
               borderRadius: BorderRadius.circular(100),
               child: Container(
@@ -267,9 +281,13 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
 
-      Obx(() => CountDownTimer(startTimer: _controller.startTimer.value)),
+
+      Obx(() => CountDownTimer(
+          startTimer:
+          _controller.vpnState.value == VpnEngine.vpnConnected)),
     ],
   );
+
 
   Widget _changeLocation() => SafeArea(
     child: Semantics(
