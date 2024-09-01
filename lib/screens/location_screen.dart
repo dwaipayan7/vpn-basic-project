@@ -8,6 +8,7 @@ import 'package:vpn_basic_project/api/api.dart';
 import 'package:vpn_basic_project/controllers/location_controller.dart';
 
 import '../main.dart';
+import '../widgets/vpn_card.dart';
 
 class LocationScreen extends StatefulWidget {
   const LocationScreen({super.key});
@@ -59,10 +60,16 @@ class _LocationScreenState extends State<LocationScreen> {
     return Container(); // or any other widget as a fallback
   }
 
+  //Change the VPN Card Location
   _vpnData() => ListView.builder(
       itemCount: _controller.vpnList.length,
-      itemBuilder: (context, index) =>Text(_controller.vpnList[index].hostname)
-  );
+      physics: BouncingScrollPhysics(),
+      padding: EdgeInsets.only(
+          top: mq.height * .015,
+          bottom: mq.height * .1,
+          left: mq.width * .04,
+          right: mq.width * .04),
+      itemBuilder: (ctx, i) => VpnCard(vpn: _controller.vpnList[i]));
 
   _loadingWidget() => SizedBox(
         width: double.infinity,

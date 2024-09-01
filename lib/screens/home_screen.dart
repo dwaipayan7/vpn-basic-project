@@ -115,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   HomeCard(
-                      title: _controller.vpn.value.CountryLong.isEmpty
+                      title: _controller.vpn.value == null
                           ? 'Country'
                           : _controller.vpn.value.CountryLong,
                       subtitle: 'FREE',
@@ -129,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         backgroundImage: _controller.vpn.value.CountryLong.isEmpty
                             ? null
                             : AssetImage(
-                            'assets/flags/${_controller.vpn.value.CountryShort.toLowerCase()}.png'),
+                            'assets/flags/${_controller.vpn.value!.CountryShort}.png'),
                       )),
 
                   HomeCard(
