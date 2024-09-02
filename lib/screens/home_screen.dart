@@ -13,59 +13,15 @@ import '../models/vpn_config.dart';
 import '../models/vpn_status.dart';
 import '../services/vpn_engine.dart';
 
-class HomeScreen extends StatefulWidget {
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-
+class HomeScreen extends StatelessWidget {
+  HomeScreen({super.key});
+  // List<VpnConfig> _listVpn = [];
   final _controller = Get.put(HomeController());
-  List<VpnConfig> _listVpn = [];
-  VpnConfig? _selectedVpn;
 
-
-
-  @override
-  void initState() {
-    super.initState();
-    
-
-    ///Add listener to update vpn state
-    VpnEngine.vpnStageSnapshot().listen((event) {
-      _controller.vpnState.value = event;
-    });
-
-    initVpn();
-  }
-  
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    _controller.dispose();
-  }
-
-  void initVpn() async {
-    //sample vpn config file (you can get more from https://www.vpngate.net/)
-    _listVpn.add(VpnConfig(
-        config: await rootBundle.loadString('assets/vpn/japan.ovpn'),
-        country: 'Japan',
-        username: 'vpn',
-        password: 'vpn'));
-
-    _listVpn.add(VpnConfig(
-        config: await rootBundle.loadString('assets/vpn/thailand.ovpn'),
-        country: 'Thailand',
-        username: 'vpn',
-        password: 'vpn'));
-
-    SchedulerBinding.instance.addPostFrameCallback(
-        (t) => setState(() => _selectedVpn = _listVpn.first));
-  }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
@@ -107,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
             //VPN Button
             Obx(()=> _vpnButton()),
 
-            
+
             // SizedBox(height: 20,),
             Obx(
             ()=>
@@ -116,27 +72,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   HomeCard(
                     //Improvement in the code showing the flag
-                      title: _controller.vpn.value.CountryLong.isEmpty
+                      title: _controller.vpn.value.countryLong.isEmpty
                           ? 'Country'
-                          : _controller.vpn.value.CountryLong,
+                          : _controller.vpn.value.countryLong,
                       subtitle: 'FREE',
                       icon: CircleAvatar(
                         radius: 30,
                         backgroundColor: Colors.blue,
-                        child: _controller.vpn.value.CountryLong.isEmpty
+                        child: _controller.vpn.value.countryLong.isEmpty
                             ? Icon(Icons.vpn_lock_rounded,
                             size: 30, color: Colors.white)
                             : null,
-                        backgroundImage: _controller.vpn.value.CountryLong.isEmpty
+                        backgroundImage: _controller.vpn.value.countryLong.isEmpty
                             ? null
                             : AssetImage(
-                            'assets/flags/${_controller.vpn.value.CountryShort.toLowerCase()}.png'),
+                            'assets/flags/${_controller.vpn.value.countryShort.toLowerCase()}.png'),
                       )),
 
                   HomeCard(
-                      title: _controller.vpn.value.CountryLong.isEmpty
+                      title: _controller.vpn.value.countryLong.isEmpty
                           ? '20 ms'
-                          : '${_controller.vpn.value.Ping} ms',
+                          : '${_controller.vpn.value.ping} ms',
                       subtitle: 'PING',
                       icon: CircleAvatar(
                         radius: 30,
@@ -189,24 +145,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // void _connectClick() {
-  //   ///Stop right here if user not select a vpn
-  //   if (_selectedVpn == null) return;
-  //
-  //   if (_controller.vpnState.value == VpnEngine.vpnDisconnected) {
-  //     ///Start if stage is disconnected
-  //     VpnEngine.startVpn(_selectedVpn!);
-  //     CountDownTimer() = true;
-  //   } else {
-  //     ///Stop if stage is "not" disconnected
-  //     _con.startTimer.value = false;
-  //     VpnEngine.stopVpn();
-  //
-  //   }
-  // }
-
-
-
-  //VPN Button
   Widget _vpnButton() => Column(
     children: [
 
@@ -289,7 +227,6 @@ class _HomeScreenState extends State<HomeScreen> {
     ],
   );
 
-
   Widget _changeLocation() => SafeArea(
     child: Semantics(
       button: true,
@@ -327,8 +264,6 @@ class _HomeScreenState extends State<HomeScreen> {
     ),
   );
 }
-
-
 
 //Previous code
 

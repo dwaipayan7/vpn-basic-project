@@ -1,49 +1,45 @@
 class Vpn {
-
   late final String hostname;
-  late final String IP;
-  late final String Ping;
-  late final int Speed;
-  late final String CountryLong;
-  late final String CountryShort;
-  late final int NumVpnSessions;
-  late final String OpenVPNConfigDataBase64;
+  late final String ip;
+  late final String ping;
+  late final int speed;
+  late final String countryLong;
+  late final String countryShort;
+  late final int numVpnSessions;
+  late final String openVPNConfigDataBase64;
 
-  Vpn({
-    required this.hostname,
-    required this.IP,
-    required this.Ping,
-    required this.Speed,
-    required this.CountryLong,
-    required this.CountryShort,
-    required this.NumVpnSessions,
-    required this.OpenVPNConfigDataBase64,
-  });
+  Vpn(
+      {required this.hostname,
+        required this.ip,
+        required this.ping,
+        required this.speed,
+        required this.countryLong,
+        required this.countryShort,
+        required this.numVpnSessions,
+        required this.openVPNConfigDataBase64});
 
   Vpn.fromJson(Map<String, dynamic> json) {
     hostname = json['HostName'] ?? '';
-    IP = json['IP'] ?? '';
-    Ping = json['Ping'].toString(); // Ensure Ping is treated as a string
-    Speed = json['Speed'] ?? 0; // Default to 0 if Speed is null
-    CountryLong = json['CountryLong'] ?? '';
-    CountryShort = json['CountryShort'] ?? '';
-    NumVpnSessions = json['NumVpnSessions'] is int
-        ? json['NumVpnSessions']
-        : int.tryParse(json['NumVpnSessions'].toString()) ?? 0;
-    // Convert to int, default to 0 if parsing fails
-    OpenVPNConfigDataBase64 = json['OpenVPN_ConfigData_Base64'] ?? '';
+    ip = json['IP'] ?? '';
+    ping = json['Ping'].toString();
+    speed = json['Speed'] ?? 0;
+    countryLong = json['CountryLong'] ?? '';
+    countryShort = json['CountryShort'] ?? '';
+    numVpnSessions = json['NumVpnSessions'] ?? 0;
+
+    openVPNConfigDataBase64 = json['OpenVPN_ConfigData_Base64'] ?? '';
   }
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['HostName'] = hostname;
-    data['IP'] = IP;
-    data['Ping'] = Ping;
-    data['Speed'] = Speed;
-    data['CountryLong'] = CountryLong;
-    data['CountryShort'] = CountryShort;
-    data['NumVpnSessions'] = NumVpnSessions;
-    data['OpenVPN_ConfigData_Base64'] = OpenVPNConfigDataBase64;
+    data['IP'] = ip;
+    data['Ping'] = ping;
+    data['Speed'] = speed;
+    data['CountryLong'] = countryLong;
+    data['CountryShort'] = countryShort;
+    data['NumVpnSessions'] = numVpnSessions;
+    data['OpenVPN_ConfigData_Base64'] = openVPNConfigDataBase64;
     return data;
   }
 }

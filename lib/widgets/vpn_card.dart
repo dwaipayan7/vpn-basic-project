@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 import '../controllers/home_controller.dart';
 import '../helper/pref.dart';
+
 import '../main.dart';
 import '../models/vpn.dart';
 import '../services/vpn_engine.dart';
@@ -33,9 +34,11 @@ class VpnCard extends StatelessWidget {
 
             if (controller.vpnState.value == VpnEngine.vpnConnected) {
               VpnEngine.stopVpn();
-              Future.delayed(
-                  Duration(seconds: 2), () => controller.connectToVpn());
-            } else {
+            //   Future.delayed(
+            //       Duration(seconds: 2), () => controller.connectToVpn());
+            // } else {
+              controller.connectToVpn();
+            }else{
               controller.connectToVpn();
             }
           },
@@ -53,7 +56,7 @@ class VpnCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(5),
                 child: Image.asset(
-                    'assets/flags/${vpn.CountryShort.toLowerCase()}.png',
+                    'assets/flags/${vpn.countryShort.toLowerCase()}.png',
                     height: 40,
                     width: mq.width * .15,
                     fit: BoxFit.cover),
@@ -61,34 +64,30 @@ class VpnCard extends StatelessWidget {
             ),
 
             //title
-            title: Text(vpn.CountryLong),
+            title: Text(vpn.countryLong),
 
             //subtitle
             subtitle: Row(
               children: [
                 Icon(Icons.speed_rounded, color: Colors.blue, size: 20),
                 SizedBox(width: 4),
-                Text(_formatBytes(vpn.Speed, 1), style: TextStyle(fontSize: 13))
+                Text(_formatBytes(vpn.speed, 1), style: TextStyle(fontSize: 13))
               ],
             ),
 
             //trailing
-            trailing:Row(
+            trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  vpn.NumVpnSessions.toString(),
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white,
-                  ),
-                ),
+                Text(vpn.numVpnSessions.toString(),
+                    style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).primaryColor)),
                 SizedBox(width: 4),
                 Icon(CupertinoIcons.person_3, color: Colors.blue),
               ],
-            )
-
+            ),
           ),
         ));
   }
