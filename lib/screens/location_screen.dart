@@ -1,50 +1,58 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_common/get_reset.dart';
-import 'package:get/get_core/src/get_main.dart';
+
 import 'package:lottie/lottie.dart';
-import 'package:vpn_basic_project/api/api.dart';
-import 'package:vpn_basic_project/controllers/location_controller.dart';
+
+import '../controllers/location_controller.dart';
 
 import '../main.dart';
 import '../widgets/vpn_card.dart';
 
 class LocationScreen extends StatelessWidget {
-   LocationScreen({super.key});
+  LocationScreen({super.key});
 
   final _controller = LocationController();
-  // @override
+  // final _adController = NativeAdController();
+
   @override
   Widget build(BuildContext context) {
+    if (_controller.vpnList.isEmpty) _controller.getVpnData();
 
-    _controller.getVpnData();
+    // _adController.ad = AdHelper.loadNativeAd(adController: _adController);
 
     return Obx(
-      ()=> Scaffold(
+          () => Scaffold(
+        //app bar
         appBar: AppBar(
-          backgroundColor: Colors.blueAccent,
-          title: Text(
-            'VPN Locations(${_controller.vpnList.length})',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-          ),
-          centerTitle: true,
-          iconTheme: IconThemeData(color: Colors.white),
+          title: Text('VPN Locations (${_controller.vpnList.length})'),
         ),
-        body: _controller.isLoading.value
-            ? _loadingWidget() ?? _defaultWidget()
-            : _controller.vpnList.isEmpty
-            ? _noVpnFound() ?? _defaultWidget()
-            : _vpnData() ?? _defaultWidget()),
 
+        // bottomNavigationBar:
+        // // Config.hideAds ? null:
+        // _adController.ad != null && _adController.adLoaded.isTrue
+        //     ? SafeArea(
+        //     child: SizedBox(
+        //         height: 85, child: AdWidget(ad: _adController.ad!)))
+        //     : null,
+
+        //refresh button
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(bottom: 10, right: 10),
+          child: FloatingActionButton(
+              onPressed: () => _controller.getVpnData(),
+              child: Icon(CupertinoIcons.refresh)),
+        ),
+
+        body: _controller.isLoading.value
+            ? _loadingWidget()
+            : _controller.vpnList.isEmpty
+            ? _noVPNFound()
+            : _vpnData(),
+      ),
     );
   }
 
-  Widget _defaultWidget() {
-    return Container(); // or any other widget as a fallback
-  }
-
-  //Change the VPN Card Location
   _vpnData() => ListView.builder(
       itemCount: _controller.vpnList.length,
       physics: BouncingScrollPhysics(),
@@ -56,34 +64,32 @@ class LocationScreen extends StatelessWidget {
       itemBuilder: (ctx, i) => VpnCard(vpn: _controller.vpnList[i]));
 
   _loadingWidget() => SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            //Lottie Animation
-            LottieBuilder.asset(
-              'assets/lottie/loading.json',
-              width: mq.width * 0.7,
-            ),
-            Text(
-              "Loading VPN's...🙂\n",
-              style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black54),
-            )
-          ],
-        ),
-      );
+    width: double.infinity,
+    height: double.infinity,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        //lottie animation
+        LottieBuilder.asset('assets/lottie/loading.json',
+            width: mq.width * .7),
 
-  _noVpnFound() {
-    Center(
-      child: Text(
-        "No VPN's Found...😟\n",
-        style: TextStyle(
-            fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black54),
-      ),
-    );
-  }
+        //text
+        Text(
+          'Loading VPNs... 😌',
+          style: TextStyle(
+              fontSize: 18,
+              color: Colors.black54,
+              fontWeight: FontWeight.bold),
+        )
+      ],
+    ),
+  );
+
+  _noVPNFound() => Center(
+    child: Text(
+      'VPNs Not Found! 😔',
+      style: TextStyle(
+          fontSize: 18, color: Colors.black54, fontWeight: FontWeight.bold),
+    ),
+  );
 }
